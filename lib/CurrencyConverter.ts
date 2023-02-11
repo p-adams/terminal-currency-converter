@@ -1,28 +1,35 @@
-interface CurrencyConverter {
+interface CurrencyConverterArgs {
   amount: string;
   from: string;
   to: string;
 }
 
-export default class CurrencyConverterCoordinator {
-  #amount: number;
-  #from: string;
-  #to: string;
-  constructor({ amount, from, to }: CurrencyConverter) {
+interface CurrencyConverterCoordinator {
+  amount: number;
+  from: string;
+  to: string;
+  printConversion: () => void;
+}
+
+export default class CurrencyConverter implements CurrencyConverterCoordinator {
+  #amount;
+  #from;
+  #to;
+  constructor({ amount, from, to }: CurrencyConverterArgs) {
     this.#amount = +amount;
     this.#from = from;
     this.#to = to;
   }
 
-  public get amount(): number {
+  public get amount() {
     return this.#amount;
   }
 
-  public get from(): string {
+  public get from() {
     return this.#from;
   }
 
-  public get to(): string {
+  public get to() {
     return this.#to;
   }
 
