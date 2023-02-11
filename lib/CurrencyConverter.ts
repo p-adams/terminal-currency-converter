@@ -25,11 +25,15 @@ export default class CurrencyConverter implements CurrencyConverterCoordinator {
     this.#amount = +amount;
     this.#from = from;
     this.#to = to;
-    this.#currency = new Currency(from);
+    this.#currency = new Currency(this.#to);
   }
 
   public get conversion(): number {
     return this.#conversion;
+  }
+
+  public set conversion(v: number) {
+    this.#conversion = v;
   }
 
   public get currency(): Currency {
@@ -48,8 +52,11 @@ export default class CurrencyConverter implements CurrencyConverterCoordinator {
     return this.#to;
   }
 
-  public printConversion() {
-    const conversion = 0;
-    console.log(`${this.from}:${this.amount} => ${this.to}:${conversion}`);
+  public async printConversion() {
+    const rate = await this.currency.getRate(this.from);
+    this.conversion = (this.amount * Math.round(rate * 100)) / 100;
+    console.log(
+      `${this.from}:${this.amount} => ${this.to}:${this.conversion.toFixed(2)}`
+    );
   }
 }

@@ -1,6 +1,6 @@
 export interface ICurrency {
   code: string;
-  convertTo: (code: string) => void;
+  getRate: (code: string) => void;
 }
 
 export default class Currency implements ICurrency {
@@ -14,10 +14,12 @@ export default class Currency implements ICurrency {
   public set code(code: string) {
     this.#code = code;
   }
-  public convertTo(toCode: string) {
-    const fmtToCode = toCode.toLocaleLowerCase();
-    fetch(`http://www.floatrates.com/daily/${fmtToCode}.json`)
-      .then((res) => res.json())
-      .then((res) => console.log(res));
+  public async getRate(code: string): Promise<number> {
+    const fmtCode = code.toLocaleLowerCase();
+    const data = await fetch(
+      `http://www.floatrates.com/daily/${fmtCode}.json`
+    ).then((res) => res.json());
+
+    return data[this.code]?.rate;
   }
 }
