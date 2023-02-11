@@ -1,4 +1,9 @@
-export class Currency {
+export interface ICurrency {
+  code: string;
+  convertTo: (code: string) => void;
+}
+
+export default class Currency implements ICurrency {
   #code: string;
   constructor(code: string) {
     this.#code = code.toLocaleLowerCase();
@@ -16,6 +21,3 @@ export class Currency {
       .then((res) => console.log(res));
   }
 }
-
-const usd = new Currency("USD");
-usd.convertTo("afn");
